@@ -83,7 +83,7 @@ public abstract class MapObject {
         int leftTile = (int)(x - cwidth/2) / tileSize;
         int rightTile = (int)(x + cwidth/2 - 1) / tileSize;
         int topTile = (int)(y - cheight/2) / tileSize;
-        int bottomTile = (int)(y + cheight/2) / tileSize;
+        int bottomTile = (int)(y + cheight/2 - 1) / tileSize;
 
         int tl = tileMap.getType(topTile, leftTile);
         int tr = tileMap.getType(topTile, rightTile);
@@ -113,6 +113,7 @@ public abstract class MapObject {
             if(topRight || topLeft){
                 dy = 0;
                 ytemp = currentRow * tileSize + cheight/2;
+                System.out.println("colission TOP");
             } else
                 ytemp += dy;
         }
@@ -120,6 +121,8 @@ public abstract class MapObject {
             if(bottomRight || bottomLeft){
                 dy = 0;
                 ytemp = (currentRow+1) * tileSize - cheight/2;
+                System.out.println("colission dedesubt");
+                falling = false;
             } else
                 ytemp += dy;
         }
@@ -129,6 +132,7 @@ public abstract class MapObject {
             if(topLeft || bottomLeft){
                 dx = 0;
                 xtemp = currentCol * tileSize + cwidth/2;
+                System.out.println("colission Stanga");
             } else
                 xtemp += dx;
         }
@@ -136,9 +140,11 @@ public abstract class MapObject {
             if(topRight || bottomRight) {
                 dx = 0;
                 xtemp = (currentCol + 1) * tileSize - cwidth/2;
+                System.out.println("colission Dreapta");
             } else
                 xtemp += dx;
         }
+
 
         if(!falling){
             calculateCorners(x, ydest + 1);
@@ -178,5 +184,13 @@ public abstract class MapObject {
     public boolean isOnScreen() {
         return x + xmap + width > 0 || x + xmap - width < GamePanel.WIDTH ||
                 y + ymap + height > 0 || y + ymap - height < GamePanel.HEIGHT;
+    }
+
+    public void draw(Graphics2D g) {
+        if(facingRight) {
+            g.drawImage(animation.getImage(), (int) (x + xmap - width / 2), (int) (y + ymap - height / 2), null);
+        } else {
+            g.drawImage(animation.getImage(), (int) (x + xmap -width / 2 + width), (int) (y + ymap - height/2), -width, height, null);
+        }
     }
 }

@@ -39,19 +39,19 @@ public class GameStateManager {
     public void update() {
         try{
             gameStates[currentState].update();
-        }catch (Exception e){e.printStackTrace();}
+        }catch (Exception e){}
     }
 
     public void draw(Graphics2D g) {
         try{
             gameStates[currentState].draw(g);
-        }catch (Exception e){e.printStackTrace();}
+        }catch (Exception e){}
     }
 
     public void keyPressed(int k) {
         try{
             gameStates[currentState].keyPressed(k);
-        }catch (Exception e){e.printStackTrace();}
+        }catch (Exception e){}
     }
 
     public void keyReleased(int k) {
