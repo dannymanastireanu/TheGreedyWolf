@@ -113,7 +113,6 @@ public abstract class MapObject {
             if(topRight || topLeft){
                 dy = 0;
                 ytemp = currentRow * tileSize + cheight/2;
-                System.out.println("colission TOP");
             } else
                 ytemp += dy;
         }
@@ -121,7 +120,6 @@ public abstract class MapObject {
             if(bottomRight || bottomLeft){
                 dy = 0;
                 ytemp = (currentRow+1) * tileSize - cheight/2;
-                System.out.println("colission dedesubt");
                 falling = false;
             } else
                 ytemp += dy;
@@ -132,7 +130,6 @@ public abstract class MapObject {
             if(topLeft || bottomLeft){
                 dx = 0;
                 xtemp = currentCol * tileSize + cwidth/2;
-                System.out.println("colission Stanga");
             } else
                 xtemp += dx;
         }
@@ -140,7 +137,6 @@ public abstract class MapObject {
             if(topRight || bottomRight) {
                 dx = 0;
                 xtemp = (currentCol + 1) * tileSize - cwidth/2;
-                System.out.println("colission Dreapta");
             } else
                 xtemp += dx;
         }
@@ -165,6 +161,12 @@ public abstract class MapObject {
         this.x = x;
         this.y = y;
     }
+
+    public void setPosition(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+
     public void setVector(double dx, double dy) {
         this.dx = dx;
         this.dy = dy;

@@ -1,11 +1,13 @@
 package GameState;
 
+import java.sql.*;
 import Audio.AudioPlayer;
 import Entity.Enemies.Fox;
 import Entity.Enemy;
 import Entity.Explosion;
 import Entity.Hud;
 import Entity.Player;
+import Main.DataBaseManager;
 import Main.GamePanel;
 import TileMap.Background;
 import TileMap.TileMap;
@@ -24,6 +26,8 @@ public class Level1State extends GameState {
     private ArrayList<Explosion> explosions;
 
     private Hud hud;
+
+    private DataBaseManager dataBaseManager;
 
 //    private AudioPlayer bgMusic;
 
@@ -52,8 +56,12 @@ public class Level1State extends GameState {
 
         hud = new Hud(player);
 
+        dataBaseManager = new DataBaseManager(player);
+        dataBaseManager.createTable();
+
 //        bgMusic = new AudioPlayer("/Music/musicGame.mp3");
 //        bgMusic.play();
+
 
     }
 
@@ -139,6 +147,10 @@ public class Level1State extends GameState {
         if(k == KeyEvent.VK_DOWN) player.setDown(true);
         if(k == KeyEvent.VK_SPACE) player.setJumping(true);
         if(k == KeyEvent.VK_X) player.setScratching(true);
+
+        //data base stuff
+        if(k == KeyEvent.VK_S)  dataBaseManager.insetInTable();
+        if(k == KeyEvent.VK_U)  dataBaseManager.updatePlayerFromDataBase();
     }
 
     @Override

@@ -4,7 +4,6 @@ import TileMap.Background;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.io.IOException;
 
 public class MenuState extends GameState{
 

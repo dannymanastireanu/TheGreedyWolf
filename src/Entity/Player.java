@@ -79,6 +79,7 @@ public class Player extends MapObject {
         animation.setDelay(400);
     }
 
+    public void setHealth(int health) { this.health = health; }
     public int getHealth() { return health; }
     public int getMaxHealth() { return maxHealth; }
     public void setScratching(boolean bool) { scratching = bool; }
