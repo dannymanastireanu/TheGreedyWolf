@@ -55,7 +55,7 @@ public class Player extends MapObject {
 
         health = maxHealth = 5;
 
-        scratchDamage = 20;
+        scratchDamage = 3;
         scratchRange = 30;
 
         //load sprites

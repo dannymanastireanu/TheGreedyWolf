@@ -37,7 +37,7 @@ public class AudioPlayer {
 
     public void close() {
         stop();
-        clip.stop();
+        clip.close();
     }
 
 }

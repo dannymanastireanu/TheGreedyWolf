@@ -1,8 +1,8 @@
 package GameState;
 
-import java.sql.*;
 import Audio.AudioPlayer;
 import Entity.Enemies.Fox;
+import Entity.Enemies.Oposum;
 import Entity.Enemy;
 import Entity.Explosion;
 import Entity.Hud;
@@ -22,14 +22,15 @@ public class Level1State extends GameState {
     private Background bg, bbg;
 
     private Player player;
-    private ArrayList<Enemy> enemies;
+    private ArrayList<Enemy> enemiesFox;
     private ArrayList<Explosion> explosions;
+
 
     private Hud hud;
 
     private DataBaseManager dataBaseManager;
 
-//    private AudioPlayer bgMusic;
+    private AudioPlayer scratchSFX, explosionSFX;
 
     public Level1State(GameStateManager gsm){
         this.gsm = gsm;
@@ -50,6 +51,7 @@ public class Level1State extends GameState {
         player = new Player(tileMap);
         player.setPosition(100, 100);
 
+
         populateWithEnemies();
 
         explosions = new ArrayList<>();
@@ -59,16 +61,19 @@ public class Level1State extends GameState {
         dataBaseManager = new DataBaseManager(player);
         dataBaseManager.createTable();
 
-//        bgMusic = new AudioPlayer("/Music/musicGame.mp3");
-//        bgMusic.play();
+        AudioPlayer bgMusic = new AudioPlayer("/Music/musicGame.wav");
+        scratchSFX = new AudioPlayer("/SoundEffects/growling.wav");
+        explosionSFX = new AudioPlayer("/SoundEffects/explosion.wav");
+        bgMusic.play();
 
 
     }
 
     private void populateWithEnemies() {
-        enemies = new ArrayList<>();
+        enemiesFox = new ArrayList<>();
 
         Fox foxies;
+        Oposum oposums;
         Point[] points = new Point[] {
                 new Point(30, 100),
                 new Point(860, 200),
@@ -77,10 +82,10 @@ public class Level1State extends GameState {
                 new Point(1800, 200)
         };
 
-        for (int i = 0; i < points.length; i++) {
+        for (Point point : points) {
             foxies = new Fox(tileMap);
-            foxies.setPosition(points[i].x, points[i].y);
-            enemies.add(foxies);
+            foxies.setPosition(point.x, point.y);
+            enemiesFox.add(foxies);
         }
     }
 
@@ -93,12 +98,12 @@ public class Level1State extends GameState {
         bbg.setPosition(tileMap.getX(), tileMap.getY());
 
         if(player.checkAttack())
-            player.checkAttack(enemies);
+            player.checkAttack(enemiesFox);
 
-        for (Enemy enemy : enemies) {
+        for (Enemy enemy : enemiesFox) {
             enemy.update();
             if(enemy.isDead()) {
-                enemies.remove(enemy);
+                enemiesFox.remove(enemy);
                 explosions.add(new Explosion(enemy.getx(), enemy.gety()));
             }
         }
@@ -107,10 +112,12 @@ public class Level1State extends GameState {
             e.update();
             if(e.shouldRemove()){
                 explosions.remove(e);
+                explosionSFX.play();
             }
         }
 
-        if(enemies.isEmpty()){
+
+        if(enemiesFox.isEmpty()){
             System.out.println("WIN");
             System.exit(1);
         }
@@ -127,7 +134,7 @@ public class Level1State extends GameState {
 
         player.draw(g);
 
-        for (Enemy enemy : enemies) {
+        for (Enemy enemy : enemiesFox) {
             enemy.draw(g);
         }
 
@@ -146,11 +153,15 @@ public class Level1State extends GameState {
         if(k == KeyEvent.VK_UP) player.setUp(true);
         if(k == KeyEvent.VK_DOWN) player.setDown(true);
         if(k == KeyEvent.VK_SPACE) player.setJumping(true);
-        if(k == KeyEvent.VK_X) player.setScratching(true);
+        if(k == KeyEvent.VK_X) {
+            player.setScratching(true);
+            scratchSFX.play();
+        }
 
         //data base stuff
         if(k == KeyEvent.VK_S)  dataBaseManager.insetInTable();
         if(k == KeyEvent.VK_U)  dataBaseManager.updatePlayerFromDataBase();
+
     }
 
     @Override

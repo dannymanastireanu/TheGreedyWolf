@@ -25,7 +25,7 @@ public class Fox extends Enemy {
         cwidth = 20;
         cheight = 20;
 
-        height = maxHealth = 2;
+        health = maxHealth = 2;
         damage = 1;
 
         try{
